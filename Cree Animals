@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cree Animal Match Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #4F6958; /* Soft forest green */
+            --primary-color: #A3C9A8; /* Lighter green-gray */
+            --secondary-color: #43544D; /* Darker forest green */
+            --text-color: #f0f0f0;
+            --correct-color: #72B095;
+            --incorrect-color: #D9604C;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://placehold.co/1920x1080/4F6958/ffffff?text=Forest') center/cover no-repeat fixed;
+            filter: grayscale(40%) blur(2px) brightness(0.5);
+            z-index: -1;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: var(--secondary-color);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(163, 201, 168, 0.3);
+            border: 2px solid var(--primary-color);
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+        p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: rgba(240, 240, 240, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .drop-targets, .drag-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .game-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            /* Adjustments for better mobile responsiveness */
+            height: auto; 
+            min-height: 120px; /* Ensure a minimum tappable area */
+            flex-basis: 30%; /* Use a percentage for flexible width */
+            flex-grow: 1; 
+            max-width: 180px; 
+            border-radius: 10px;
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-sizing: border-box;
+            text-align: center;
+            text-transform: none;
+            word-break: break-word;
+        }
+        
+        @media (max-width: 500px) {
+            .game-item {
+                flex-basis: 45%;
+                font-size: clamp(0.7rem, 3vw, 1.1rem);
+                min-height: 100px;
+            }
+        }
+
+        .drop-target {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px dashed var(--primary-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .drag-item {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+
+        .drag-item.dragging {
+            opacity: 0;
+        }
+
+        .drag-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .drop-target.correct {
+            background-color: var(--correct-color);
+            border-color: var(--correct-color);
+            box-shadow: 0 0 20px var(--correct-color);
+            animation: bounceIn 0.6s forwards;
+        }
+        
+        .drop-target.shake {
+            animation: shake 0.5s;
+        }
+
+        .drag-item.correct {
+            opacity: 0.5;
+            cursor: default;
+            box-shadow: none;
+            pointer-events: none;
+            animation: bounceOut 0.6s forwards;
+        }
+        
+        .drag-item.tumble {
+            animation: tumble 0.6s forwards;
+        }
+        
+        .game-message {
+            margin-top: 30px;
+            font-size: 2rem;
+            color: var(--correct-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .game-item .asset {
+            max-width: 60%;
+            max-height: 60%;
+            height: auto;
+            margin-top: 5px;
+        }
+
+        #reset-button {
+            margin-top: 30px;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #reset-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounceOut {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(0.5); opacity: 0; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes tumble {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(20px) rotate(180deg); opacity: 0.8; }
+            100% { transform: translateY(0) rotate(360deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Cree Animal Match Game</h1>
+        <p>Drag the Cree animal name to the correct English word.</p>
+        
+        <div class="game-area">
+            <div class="drop-targets">
+                <!-- Drop targets will be populated by JavaScript -->
+            </div>
+
+            <div class="drag-items">
+                <!-- Drag items will be populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="game-message" id="win-message">You Win!</div>
+        <button id="reset-button">Reset Game</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dragItemsContainer = document.querySelector('.drag-items');
+            const dropTargetsContainer = document.querySelector('.drop-targets');
+            const resetButton = document.getElementById('reset-button');
+            const winMessage = document.getElementById('win-message');
+            
+            let correctMatches = 0;
+            
+            // Define the pairs of English and Cree words with their image assets
+            const pairs = {
+                'Badger': { cree: 'mistanask', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/badger.svg' },
+                'Bear': { cree: 'maskwa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/bear.svg' },
+                'Beaver': { cree: 'amisk', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/beaver.svg' },
+                'Buffalo': { cree: 'paskwa mostos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/buffalo.svg' },
+                'Caribou': { cree: 'atihkawa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/caribou.svg' },
+                'Cat': { cree: 'minôs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/cat.svg' },
+                'Cow': { cree: 'mostos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/cow.svg' },
+                'Coyote': { cree: 'mêstacâkanis', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/coyote.svg' },
+                'Crow': { cree: 'âhâsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/Crow.svg' },
+                'Deer/elk': { cree: 'wâwâskêsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/deer.svg' },
+                'Dog': { cree: 'atim', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/dog.svg' },
+                'Duck': { cree: 'sîsîp', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/duck.svg' },
+                'Eagle': { cree: 'kihew', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/eagle.svg' },
+                'Frog': { cree: 'ayîkis', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/frog.svg' },
+                'Goose': { cree: 'niska', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/goose.svg' },
+                'Horse': { cree: 'mistatim', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/horse.svg' },
+                'Loon': { cree: 'mâkwa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/loon.svg' },
+                'Mouse': { cree: 'wâpakosîs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/mouse.svg' },
+                'Pig': { cree: 'kohkôs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/pig.svg' },
+                'Porcupine': { cree: 'kâkwa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/porcupine.svg' },
+                'Rabbit': { cree: 'wâpos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/rabbit.svg' },
+                'Sheep': { cree: 'mâyatihk', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/sheep.svg' },
+                'Skunk': { cree: 'sâkwês', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/skunk.svg' },
+                'Squirrel': { cree: 'anikwacâs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/squirrel.svg' },
+                'Weasel': { cree: 'sihkos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/weasel.svg' },
+                'Wolf': { cree: 'mahihkan', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/wolf.svg' }
+            };
+
+            const totalMatches = Object.keys(pairs).length;
+            
+            // Fisher-Yates shuffle algorithm
+            const shuffle = (array) => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            };
+
+            const createItems = () => {
+                const animals = Object.keys(pairs);
+                const creeWords = animals.map(animal => pairs[animal].cree);
+                const shuffledWords = shuffle(creeWords);
+                
+                // Clear existing items
+                dropTargetsContainer.innerHTML = '';
+                dragItemsContainer.innerHTML = '';
+                
+                // Create drop targets (English names with images)
+                animals.forEach(animal => {
+                    const dropTarget = document.createElement('div');
+                    dropTarget.classList.add('game-item', 'drop-target');
+                    dropTarget.innerHTML = `<div>${animal}</div><img class="asset" src="${pairs[animal].asset}" alt="${animal}">`;
+                    dropTarget.dataset.animal = animal;
+                    dropTargetsContainer.appendChild(dropTarget);
+                });
+
+                // Create drag items (Cree words)
+                shuffledWords.forEach(word => {
+                    const dragItem = document.createElement('div');
+                    dragItem.classList.add('game-item', 'drag-item');
+                    dragItem.textContent = word;
+                    dragItem.dataset.word = word;
+                    dragItem.setAttribute('draggable', 'true');
+                    dragItemsContainer.appendChild(dragItem);
+                });
+            };
+
+            const addEventListeners = () => {
+                const dragItems = document.querySelectorAll('.drag-item');
+                const dropTargets = document.querySelectorAll('.drop-target');
+
+                dragItems.forEach(item => {
+                    item.addEventListener('dragstart', (e) => {
+                        // Store the data of the dragged item
+                        e.dataTransfer.setData('text/plain', item.dataset.word);
+                        e.dataTransfer.effectAllowed = 'move';
+                        // Add a class to hide the item during drag
+                        setTimeout(() => {
+                           e.target.classList.add('dragging');
+                        }, 0);
+                    });
+
+                    item.addEventListener('dragend', (e) => {
+                        // On drag end, remove the dragging class
+                        e.target.classList.remove('dragging');
+                    });
+                });
+
+                dropTargets.forEach(target => {
+                    target.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                    });
+
+                    target.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const droppedWord = e.dataTransfer.getData('text/plain');
+                        const targetAnimal = target.dataset.animal;
+                        
+                        const draggedItem = document.querySelector(`.drag-item[data-word="${droppedWord}"]`);
+
+                        // Check if the drop is correct and the target isn't already filled
+                        if (pairs[targetAnimal].cree === droppedWord && !target.classList.contains('correct')) {
+                            e.dataTransfer.dropEffect = 'move';
+                            target.classList.add('correct');
+                            draggedItem.classList.add('correct');
+                            draggedItem.style.order = Array.from(dropTargetsContainer.children).indexOf(target); // Align the drag item with the drop target
+                            correctMatches++;
+                            checkWinCondition();
+                        } else {
+                            // Incorrect drop, trigger shake animation
+                            e.dataTransfer.dropEffect = 'none';
+                            target.classList.add('shake');
+                            setTimeout(() => {
+                                target.classList.remove('shake');
+                            }, 500);
+                        }
+                    });
+                });
+            };
+
+            const checkWinCondition = () => {
+                if (correctMatches === totalMatches) {
+                    winMessage.style.opacity = '1';
+                    winMessage.style.transform = 'scale(1)';
+                }
+            };
+
+            const resetGame = () => {
+                correctMatches = 0;
+                winMessage.style.opacity = '0';
+                winMessage.style.transform = 'scale(0.5)';
+                createItems();
+                addEventListeners();
+            };
+            
+            // Initial setup
+            createItems();
+            addEventListeners();
+            
+            resetButton.addEventListener('click', resetGame);
+        });
+    </script>
+</body>
+</html>
+
