@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cree Animal Flashcard Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f4f4f2;
+            color: #333333;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .game-container {
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border: 3px solid #bdbdbd;
+            border-radius: 2rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 1.5rem;
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #333333;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .category-container {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+        .category-title {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            color: #555;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #bdbdbd;
+            padding-bottom: 0.5rem;
+        }
+
+        .game-board {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .card-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+            height: 140px;
+            flex-basis: 150px; /* Each card has a basis of 150px for wrapping */
+            flex-grow: 1; /* Allows cards to grow if space is available */
+            max-width: 180px; /* Prevents cards from getting too large */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 1.25rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 0.75rem;
+            box-sizing: border-box;
+            line-height: 1.2;
+            border: 3px solid #bdbdbd;
+            word-break: break-word;
+        }
+
+        .card-face.front {
+            font-size: 1.2rem;
+            background-color: #e0f2f1;
+            color: #333333;
+        }
+
+        .card-face.back {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #e0f2f1, #c8e6c9);
+            color: #333333;
+            transform: rotateY(180deg);
+        }
+
+        .card-face .asset {
+            max-width: 60%;
+            max-height: 60%;
+            height: auto;
+            margin-top: 5px;
+        }
+        
+        .card-face .emoji {
+            font-size: 2.5rem;
+        }
+
+        .controls {
+            margin-top: 3rem;
+        }
+
+        #reset-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333333;
+            background: linear-gradient(135deg, #e0f2f1, #c8e6c9);
+            border: 3px solid #bdbdbd;
+            border-radius: 2rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #reset-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Cree Animal Flashcard Game</h1>
+        <p>Click a card to see the Cree translation.</p>
+        
+        <div id="game-content"></div>
+        
+        <div class="controls">
+            <button id="reset-button">Reset Game</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameContent = document.getElementById('game-content');
+            const resetButton = document.getElementById('reset-button');
+
+            const categories = [
+                {
+                    name: 'Birds',
+                    animals: [
+                        { english: 'Blackbird', cree: 'cahcahkâyow', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/Blackbird.svg' },
+                        { english: 'Blue jay', cree: 'kwîhkwîsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/blue%20jay.svg' },
+                        { english: 'Crow', cree: 'âhâsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/Crow.svg' },
+                        { english: 'Duck', cree: 'sîsîp', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/duck.svg' },
+                        { english: 'Eagle', cree: 'kihew', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/eagle.svg' },
+                        { english: 'Goose', cree: 'niska', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/goose.svg' }
+                    ]
+                },
+                {
+                    name: 'Large Land Animals',
+                    animals: [
+                        { english: 'Bear', cree: 'maskwa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/bear.svg' },
+                        { english: 'Wolf', cree: 'mahihkan', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/wolf.svg' },
+                        { english: 'Moose', cree: 'môswa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/moose.svg' },
+                        { english: 'Caribou', cree: 'atih' + 'kawa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/caribou.svg' },
+                        { english: 'Horse', cree: 'mistatim', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/horse.svg' },
+                        { english: 'Buffalo', cree: 'paskwa mostos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/buffalo.svg' }
+                    ]
+                },
+                {
+                    name: 'Medium Land Animals',
+                    animals: [
+                        { english: 'Badger', cree: 'mistanask', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/badger.svg' },
+                        { english: 'Coyote', cree: 'm' + 'êstacâkanis', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/coyote.svg' },
+                        { english: 'Deer', cree: 'wâwâskêsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/deer.svg' },
+                        { english: 'Fox', cree: 'mahkêsîs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/fox.svg' },
+                        { english: 'Skunk', cree: 'sâkwês', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/skunk.svg' },
+                        { english: 'Pig', cree: 'kohkôs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/pig.svg' }
+                    ]
+                },
+                {
+                    name: 'Small Creatures & Burrowing Animals',
+                    animals: [
+                        { english: 'Mouse', cree: 'wâpakosîs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/mouse.svg' },
+                        { english: 'Porcupine', cree: 'kâkwa', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/porcupine.svg' },
+                        { english: 'Rabbit', cree: 'wâpos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/rabbit.svg' },
+                        { english: 'Squirrel', cree: 'anikwacâs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/squirrel.svg' },
+                        { english: 'Weasel', cree: 'sihkos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/weasel.svg' },
+                        { english: 'Frog', cree: 'ayîkis', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/frog.svg' }
+                    ]
+                },
+                {
+                    name: 'Other Creatures',
+                    animals: [
+                        { english: 'Beaver', cree: 'amisk', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/beaver.svg' },
+                        { english: 'Cat', cree: 'min' + 'ôs', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/cat.svg' },
+                        { english: 'Dog', cree: 'atim', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/dog.svg' },
+                        { english: 'Cow', cree: 'mostos', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/cow.svg' },
+                        { english: 'Sheep', cree: 'mâyatihk', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/sheep.svg' },
+                        { english: 'Thunderbird', cree: 'pihêsiw', asset: 'https://raw.githubusercontent.com/swampy-spec/gif/main/thunderbird.svg' }
+                    ]
+                },
+            ];
+
+            const shuffleArray = (array) => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            };
+
+            const createCards = () => {
+                gameContent.innerHTML = '';
+                
+                categories.forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.classList.add('category-container');
+                    
+                    const title = document.createElement('h2');
+                    title.classList.add('category-title');
+                    title.textContent = category.name;
+                    categoryDiv.appendChild(title);
+                    
+                    const gameBoard = document.createElement('div');
+                    gameBoard.classList.add('game-board');
+                    
+                    const shuffledAnimals = shuffleArray([...category.animals]);
+                    
+                    shuffledAnimals.forEach(animal => {
+                        const cardWrapper = document.createElement('div');
+                        cardWrapper.classList.add('card-wrapper');
+                        
+                        const cardElement = document.createElement('div');
+                        cardElement.classList.add('card');
+                        
+                        // Front of the card (English name and asset)
+                        const cardFront = document.createElement('div');
+                        cardFront.classList.add('card-face', 'front');
+                        let assetHtml = `<img class="asset" src="${animal.asset}" alt="${animal.english}">`;
+                        
+                        cardFront.innerHTML = `<div>${animal.english}</div>${assetHtml}`;
+
+                        // Back of the card (Cree name)
+                        const cardBack = document.createElement('div');
+                        cardBack.classList.add('card-face', 'back');
+                        cardBack.innerHTML = `<div>${animal.cree}</div>`;
+                        
+                        cardElement.appendChild(cardFront);
+                        cardElement.appendChild(cardBack);
+                        cardWrapper.appendChild(cardElement);
+
+                        cardWrapper.addEventListener('click', () => {
+                            cardElement.classList.toggle('flipped');
+                        });
+                        
+                        gameBoard.appendChild(cardWrapper);
+                    });
+                    
+                    categoryDiv.appendChild(gameBoard);
+                    gameContent.appendChild(categoryDiv);
+                });
+            };
+
+            const resetGame = () => {
+                createCards();
+            };
+            
+            // Initial setup
+            createCards();
+            
+            resetButton.addEventListener('click', resetGame);
+        });
+    </script>
+</body>
+</html>
