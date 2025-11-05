@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cree Seasons Pronunciation</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cree-teal': '#008080', // Dark teal inspired by the poster's blue/green tones
+                        'cree-gold': '#FFD700', // Gold for accents
+                        'cree-dark': '#2E3D49', // Dark background for contrast
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for aesthetic */
+        .card {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        }
+        .audio-button {
+            transition: all 0.2s ease-in-out;
+            transform-origin: center;
+        }
+        .audio-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .audio-button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="card bg-white w-full max-w-4xl rounded-xl overflow-hidden shadow-2xl">
+        <!-- Poster Image Container - Title and subtitle removed -->
+        <div class="bg-cree-dark p-6 md:p-8">
+            
+            <!-- The poster image is displayed here -->
+            <img 
+                src="https://github.com/swampy-spec/gif/blob/main/POSTERS.jpg?raw=true" 
+                alt="Cree Seasons Poster showing Miyoskamin, Nīpin, Takwākin, and Pipon." 
+                class="w-full h-auto rounded-lg"
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/008080/FFFFFF?text=Seasons+Poster+Placeholder'"
+            >
+        </div>
+
+        <!-- Pronunciation Buttons Container -->
+        <div class="p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Audio elements are hidden and use the source tag with explicit type for better compatibility -->
+            <audio id="audio-spring">
+                <source src="https://github.com/swampy-spec/audio/blob/main/Miyoskamin%20(spring).m4a?raw=true" type="audio/mp4">
+            </audio>
+            <audio id="audio-summer">
+                <source src="https://github.com/swampy-spec/audio/blob/main/Ni%CC%82pon%20(summer).m4a?raw=true" type="audio/mp4">
+            </audio>
+            <!-- FALL/AUTUMN FIX: Ensured the raw=true parameter is appended to the source URL -->
+            <audio id="audio-fall">
+                <source src="https://github.com/swampy-spec/audio/blob/main/Takwakin%20(fall).m4a?raw=true" type="audio/mp4">
+            </audio>
+            <audio id="audio-winter">
+                <source src="https://github.com/swampy-spec/audio/blob/main/Pipon%20(Winter).m4a?raw=true" type="audio/mp4">
+            </audio>
+
+            <!-- Spring Button - Font and size updated to match poster style -->
+            <button 
+                class="audio-button w-full flex items-center justify-center p-4 bg-green-500 hover:bg-green-600 text-white font-extrabold rounded-lg text-2xl tracking-wider"
+                onclick="playAudio('spring')"
+            >
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06 0l-2.25-2.25a.75.75 0 010-1.06l2.25-2.25zM12 9a.75.75 0 000 1.5h.007a.75.75 0 000-1.5H12zm-3.75 2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007zM5.5 13.5a.75.75 0 01-.75-.75V8.25a.75.75 0 011.5 0v4.5a.75.75 0 01-.75.75zM12 18.75a.75.75 0 000-1.5h.007a.75.75 0 000-1.5H12zm-3.75-2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007z"></path></svg>
+                Miyoskamin (Spring)
+            </button>
+            
+            <!-- Summer Button - Font and size updated to match poster style -->
+            <button 
+                class="audio-button w-full flex items-center justify-center p-4 bg-yellow-500 hover:bg-yellow-600 text-cree-dark font-extrabold rounded-lg text-2xl tracking-wider"
+                onclick="playAudio('summer')"
+            >
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06 0l-2.25-2.25a.75.75 0 010-1.06l2.25-2.25zM12 9a.75.75 0 000 1.5h.007a.75.75 0 000-1.5H12zm-3.75 2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007zM5.5 13.5a.75.75 0 01-.75-.75V8.25a.75.75 0 011.5 0v4.5a.75.75 0 01-.75.75zM12 18.75a.75.75 0 000-1.5h.007a.75.75 0 000-1.5H12zm-3.75-2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007z"></path></svg>
+                Nīpin (Summer)
+            </button>
+
+            <!-- Fall/Autumn Button - Font and size updated to match poster style -->
+            <button 
+                class="audio-button w-full flex items-center justify-center p-4 bg-orange-600 hover:bg-orange-700 text-white font-extrabold rounded-lg text-2xl tracking-wider"
+                onclick="playAudio('fall')"
+            >
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06 0l-2.25-2.25a.75.75 0 010-1.06l2.25-2.25zM12 9a.75.75 0 000 1.5h.007a.75.75 0 000-1.5H12zm-3.75 2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007zM5.5 13.5a.75.75 0 01-.75-.75V8.25a.75.75 0 011.5 0v4.5a.75.75 0 01-.75.75zM12 18.75a.75.75 0 000-1.5h.007a.75.75 0 000-1.5H12zm-3.75-2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007z"></path></svg>
+                Takwākin (Fall)
+            </button>
+
+            <!-- Winter Button - Font and size updated to match poster style -->
+            <button 
+                class="audio-button w-full flex items-center justify-center p-4 bg-blue-500 hover:bg-blue-600 text-white font-extrabold rounded-lg text-2xl tracking-wider"
+                onclick="playAudio('winter')"
+            >
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06 0l-2.25-2.25a.75.75 0 010-1.06l2.25-2.25zM12 9a.75.75 0 000 1.5h.007a.75.75 0 000-1.5H12zm-3.75 2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007zM5.5 13.5a.75.75 0 01-.75-.75V8.25a.75.75 0 011.5 0v4.5a.75.75 0 01-.75.75zM12 18.75a.75.75 0 000-1.5h.007a.75.75 0 000-1.5H12zm-3.75-2.25a.75.75 0 000 1.5h.007a.75.75 0 000-1.5h-.007z"></path></svg>
+                Pipon (Winter)
+            </button>
+        </div>
+        
+        <div id="status-message" class="text-center p-4 text-gray-600">
+            <!-- Status messages appear here -->
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Plays the audio associated with the given season ID.
+         * @param {string} season - The season identifier ('spring', 'summer', 'fall', 'winter').
+         */
+        function playAudio(season) {
+            // Get the audio element (the parent <audio> tag)
+            const audio = document.getElementById(`audio-${season}`);
+            const statusDiv = document.getElementById('status-message');
+
+            if (!audio) {
+                console.error(`Audio element not found for season: ${season}`);
+                statusDiv.textContent = 'Error: Audio player not found.';
+                return;
+            }
+            
+            // Stop any currently playing audio and reset time
+            audio.pause();
+            audio.currentTime = 0;
+
+            // Attempt to play the audio
+            audio.play().then(() => {
+                statusDiv.textContent = `Playing ${season} pronunciation...`;
+            }).catch(error => {
+                console.error('Audio playback failed:', error);
+                statusDiv.innerHTML = `<span class="text-red-600">Playback failed! The browser might restrict media playback from external links.</span>`;
+                
+                // Fallback: If direct play fails, open the raw audio link in a new tab 
+                // so the user can listen directly. We get the source URL from the child element.
+                const sourceElement = audio.querySelector('source');
+                const audioUrl = sourceElement ? sourceElement.src : '#';
+
+                setTimeout(() => {
+                    statusDiv.innerHTML += `<br>Click <a href="${audioUrl}" target="_blank" class="text-cree-teal underline">here</a> to open the audio file directly.`;
+                }, 100);
+            });
+        }
+    </script>
+</body>
+</html>
