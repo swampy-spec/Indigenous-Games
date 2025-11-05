@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Shape Name Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles and fonts */
+        .font-varela { font-family: 'Varela Round', sans-serif; }
+
+        /* Image Container */
+        .image-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            /* Based on the image's aspect ratio */
+            padding-bottom: 100%; 
+            height: 0;
+            background-image: url('https://github.com/swampy-spec/gif/blob/main/Gemini_Generated_Image_djzogadjzogadjzo.png?raw=true'); 
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            border: 4px solid #4a5568;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        /* Hotspot Label Base Style: White Dot */
+        .hotspot-label {
+            position: absolute;
+            width: 16px; 
+            height: 16px; 
+            border-radius: 50%;
+            background-color: #ffffff; /* White Dot */
+            cursor: pointer;
+            opacity: 0.9;
+            transition: all 0.3s ease-in-out;
+            z-index: 10;
+            
+            /* Center the dot */
+            transform: translate(-50%, -50%);
+            
+            /* Text properties - hidden by default */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0; 
+            color: transparent; 
+            padding: 0;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .hotspot-label:hover {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.5); /* Larger dot on hover */
+            box-shadow: 0 0 10px #ffffff;
+        }
+
+        /* Hotspot Label Active Style: Expands to show text */
+        .hotspot-label.active {
+            width: auto; /* Expand width */
+            height: auto; /* Expand height */
+            min-width: 80px; /* Minimum size for readability */
+            border-radius: 4px; /* Rectangle corners for label */
+            background-color: #10b981; /* Bright background */
+            color: white; /* White text */
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            box-shadow: 0 0 15px #10b981; /* Glow effect */
+            transform: translate(-50%, -50%) scale(1); /* Reset scale, keep centering */
+            opacity: 1;
+        }
+
+        /* --- Hotspot Dot Positions (Centered using transform) --- */
+        #label-spruce { top: 40%; left: 3%; }
+        #label-tipi { top: 60%; left: 20%; }
+        #label-cabin { top: 58%; left: 56%; }
+        #label-tree { top: 45%; left: 86%; }
+        #label-box { top: 82%; left: 78%; }
+        #label-fire { top: 80%; left: 47%; }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-4 sm:p-8 font-varela flex flex-col items-center">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">Geometric Shape Name Explorer</h1>
+        <p class="text-gray-400 text-lg">Click the white dots to reveal the name of the geometric shape!</p>
+    </header>
+
+    <!-- Shape Info Box -->
+    <div id="infoBox" class="w-full max-w-lg bg-gray-800 p-4 mb-6 rounded-lg shadow-xl border-t-4 border-emerald-500 transition-all duration-300 transform scale-100 opacity-100">
+        <p id="objectName" class="text-gray-400 text-lg text-center mb-1">Object Name</p>
+        <p id="shapeName" class="text-white text-3xl font-extrabold text-center">Shape</p>
+    </div>
+
+    <!-- Image and Hotspots Container -->
+    <div id="imageContainer" class="image-container w-full rounded-xl overflow-hidden shadow-2xl">
+
+        <!-- --- HOTSPOT LABELS (Start as dots, expand to show text) --- -->
+        <!-- Note: Text content is the shape name, which is hidden until active -->
+        <div id="label-spruce" class="hotspot-label" 
+             onclick="toggleShape('label-spruce', 'Rectangle (Spruce Tree)');">Rectangle</div>
+        
+        <!-- UPDATED: Changed from Pyramid to Triangle -->
+        <div id="label-tipi" class="hotspot-label" 
+             onclick="toggleShape('label-tipi', 'Triangle (Teepee)');">Triangle</div>
+        
+        <!-- UPDATED: Changed from Pyramid to Triangle -->
+        <div id="label-cabin" class="hotspot-label" 
+             onclick="toggleShape('label-cabin', 'Triangle (Cabin Roof)');">Triangle</div>
+        
+        <div id="label-tree" class="hotspot-label" 
+             onclick="toggleShape('label-tree', 'Oval / Ellipse (Willow Tree)');">Oval</div>
+        
+        <div id="label-box" class="hotspot-label" 
+             onclick="toggleShape('label-box', 'Horizontal Rectangle (Wooden Box)');">Horizontal Rectangle</div>
+        
+        <div id="label-fire" class="hotspot-label" 
+             onclick="toggleShape('label-fire', 'Circle (Fire Pit Base)');">Circle</div>
+
+    </div>
+
+    <footer class="mt-8 text-sm text-gray-500 font-varela">
+        Image: GitHub Hosted Camp Scene
+    </footer>
+
+    <script>
+        let currentActiveLabelId = null; 
+
+        /**
+         * Toggles the 'active' class on the clicked label and updates the info box.
+         * @param {string} labelId - The ID of the hotspot-label element.
+         * @param {string} shapeText - The text to display in the info box (e.g., "Triangle (Teepee)").
+         */
+        function toggleShape(labelId, shapeText) {
+            const clickedLabel = document.getElementById(labelId);
+            const infoBox = document.getElementById('infoBox');
+            const objectNameElement = document.getElementById('objectName');
+            const shapeNameElement = document.getElementById('shapeName');
+
+            
+            // 1. Deactivate the previously active label
+            if (currentActiveLabelId && currentActiveLabelId !== labelId) {
+                document.getElementById(currentActiveLabelId).classList.remove('active');
+            }
+
+            // 2. Toggle the active state for the clicked label
+            clickedLabel.classList.toggle('active');
+
+            if (clickedLabel.classList.contains('active')) {
+                currentActiveLabelId = labelId;
+                
+                // Parse shapeText: e.g., "Triangle (Teepee)"
+                const match = shapeText.match(/(.*) \((.*)\)/);
+                let shape = shapeText;
+                let objectName = 'Object';
+
+                if (match) {
+                    shape = match[1].trim(); 
+                    objectName = match[2].trim(); 
+                }
+
+                // Update the info box
+                objectNameElement.textContent = objectName;
+                shapeNameElement.textContent = shape;
+                
+                infoBox.classList.remove('border-emerald-500');
+                infoBox.classList.add('border-yellow-400');
+            } else {
+                currentActiveLabelId = null;
+                
+                // Reset info box
+                objectNameElement.textContent = 'Welcome!';
+                shapeNameElement.textContent = 'Click a dot on the image.';
+                infoBox.classList.remove('border-yellow-400');
+                infoBox.classList.add('border-emerald-500');
+            }
+        }
+
+        // Initial state setup on load
+        window.onload = function() {
+            const objectNameElement = document.getElementById('objectName');
+            const shapeNameElement = document.getElementById('shapeName');
+            
+            // Set initial state for the Info Box
+            objectNameElement.textContent = 'Welcome!';
+            shapeNameElement.textContent = 'Click a dot on the image.';
+        }
+        
+        // Global click handler to clear selection if user clicks outside of any dot
+        document.addEventListener('click', function(event) {
+            let target = event.target;
+            let isClickOnLabel = false;
+            
+            // Check if the click occurred inside an active label
+            while (target && target !== document.body) {
+                if (target.classList && target.classList.contains('hotspot-label')) {
+                    isClickOnLabel = true;
+                    break;
+                }
+                target = target.parentNode;
+            }
+
+            if (!isClickOnLabel && currentActiveLabelId) {
+                document.getElementById(currentActiveLabelId).classList.remove('active');
+                currentActiveLabelId = null;
+                
+                // Reset info box
+                const infoBox = document.getElementById('infoBox');
+                document.getElementById('objectName').textContent = 'Welcome!';
+                document.getElementById('shapeName').textContent = 'Click a dot on the image.';
+                infoBox.classList.remove('border-yellow-400');
+                infoBox.classList.add('border-emerald-500');
+            }
+        });
+    </script>
+
+</body>
+</html>
