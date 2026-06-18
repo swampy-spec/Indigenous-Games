@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGSD Staff Wellness Wheel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Soft pastel gray (gray-100) */
+            color: #1f2937; /* gray-800 for contrast */
+            overflow: hidden; /* Prevent scrolling, fully app-like feel */
+        }
+
+        h1, h2, h3, .heading-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Clip paths for perfect pie slices */
+        .wedge-north { clip-path: polygon(50% 50%, 0 0, 100% 0); }
+        .wedge-east { clip-path: polygon(50% 50%, 100% 0, 100% 100%); }
+        .wedge-south { clip-path: polygon(50% 50%, 100% 100%, 0 100%); }
+        .wedge-west { clip-path: polygon(50% 50%, 0 100%, 0 0); }
+
+        /* Wedge hover effect */
+        .wheel-wedge {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .wheel-wedge:hover {
+            filter: brightness(1.1) drop-shadow(0 0 15px rgba(0,0,0,0.1));
+            z-index: 10;
+        }
+        
+        /* Interactive text inside wedges */
+        .wedge-text {
+            transition: transform 0.3s ease;
+        }
+        .wheel-wedge:hover .wedge-text {
+            transform: scale(1.1);
+        }
+
+        /* View Transition Animations */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Dynamic Detail Panel Layout */
+        .detail-panel {
+            position: absolute;
+            width: 80vw;
+            height: 120vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+            transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .panel-left {
+            left: -20vw;
+            top: -10vh;
+            border-radius: 0 100% 100% 0;
+            padding-left: 25vw;
+            padding-right: 3rem;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.15);
+        }
+
+        .panel-right {
+            right: -20vw;
+            top: -10vh;
+            border-radius: 100% 0 0 100%;
+            padding-right: 25vw;
+            padding-left: 3rem;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.15);
+        }
+
+        @media (min-width: 768px) {
+            .panel-left { padding-right: 6rem; }
+            .panel-right { padding-left: 6rem; }
+        }
+
+        .panel-left.semi-circle-enter { transform: translateX(-100%); }
+        .panel-left.semi-circle-active { transform: translateX(0); }
+
+        .panel-right.semi-circle-enter { transform: translateX(100%); }
+        .panel-right.semi-circle-active { transform: translateX(0); }
+
+        /* Background animal graphic animation */
+        .animal-enter {
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s;
+        }
+        .animal-active {
+            opacity: 1; 
+            transform: scale(1);
+        }
+
+        /* Staggered text reveal */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease forwards;
+        }
+
+        /* Responsive adjustments for the semi-circle */
+        @media (max-width: 768px) {
+            .detail-panel {
+                width: 150vw !important;
+                height: 70vh !important;
+                left: -25vw !important;
+                right: auto !important;
+                padding-left: 30vw !important;
+                padding-right: 30vw !important;
+                padding-top: 10vh !important;
+                padding-bottom: 10vh !important;
+                align-items: center !important;
+                text-align: center !important;
+            }
+            .panel-left {
+                top: -10vh !important;
+                bottom: auto !important;
+                border-radius: 0 0 50% 50% !important;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+            }
+            .panel-right {
+                top: auto !important;
+                bottom: -10vh !important;
+                border-radius: 50% 50% 0 0 !important;
+                box-shadow: 0 -20px 50px rgba(0,0,0,0.15) !important;
+            }
+            .panel-left.semi-circle-enter { transform: translateY(-100%); }
+            .panel-left.semi-circle-active { transform: translateY(0); }
+            .panel-right.semi-circle-enter { transform: translateY(100%); }
+            .panel-right.semi-circle-active { transform: translateY(0); }
+        }
+        
+        /* Custom scrollbar for text content if it gets too long */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2); 
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="relative w-full h-screen">
+
+    <div id="view-main" class="absolute inset-0 flex flex-col items-center justify-center fade-in z-10 w-full h-full p-4">
+        
+        <!-- Header -->
+        <div class="text-center mb-8 max-w-2xl z-20">
+            <h1 class="text-4xl md:text-5xl text-gray-800 mb-3 drop-shadow-sm">Educator Wellness</h1>
+            <p class="text-gray-600 text-sm md:text-base px-4">Click on a direction to explore holistic strategies for your mind, heart, body, and spirit</p>
+        </div>
+
+        <!-- The Medicine Wheel -->
+        <div class="relative w-[85vw] h-[85vw] max-w-[500px] max-h-[500px] rounded-full overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-8 border-white shrink-0 bg-white">
+            
+            <!-- North (White) -->
+            <div onclick="openDetail('north')" class="wheel-wedge wedge-north absolute inset-0 bg-stone-50 cursor-pointer flex flex-col items-center pt-8 md:pt-12 text-slate-800 group">
+                <div class="wedge-text flex flex-col items-center">
+                    <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">North</span>
+                    <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-center px-10">Physical & Rest</span>
+                </div>
+            </div>
+
+            <!-- East (Yellow) -->
+            <div onclick="openDetail('east')" class="wheel-wedge wedge-east absolute inset-0 bg-yellow-400 cursor-pointer flex flex-col justify-center items-end pr-6 md:pr-10 text-yellow-950 group">
+                <div class="wedge-text flex flex-col items-end">
+                    <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">East</span>
+                    <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-right pl-10">Emotional Labor</span>
+                </div>
+            </div>
+
+            <!-- South (Red) -->
+            <div onclick="openDetail('south')" class="wheel-wedge wedge-south absolute inset-0 bg-red-600 cursor-pointer flex flex-col items-center justify-end pb-8 md:pb-12 text-white group">
+                <div class="wedge-text flex flex-col items-center">
+                    <span class="text-xs md:text-sm font-semibold opacity-90 mb-1 text-center px-10">Spiritual Wellness</span>
+                    <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">South</span>
+                </div>
+            </div>
+
+            <!-- West (Blue) -->
+            <div onclick="openDetail('west')" class="wheel-wedge wedge-west absolute inset-0 bg-blue-600 cursor-pointer flex flex-col justify-center items-start pl-6 md:pl-10 text-white group">
+                <div class="wedge-text flex flex-col items-start">
+                    <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">West</span>
+                    <span class="text-xs md:text-sm font-semibold opacity-90 mt-1 text-left pr-10">Mental & Self-Talk</span>
+                </div>
+            </div>
+
+            <!-- Center decorative circle -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-white rounded-full z-10 shadow-md flex items-center justify-center pointer-events-none">
+                <div class="w-4 h-4 rounded-full bg-gray-300"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-detail" class="absolute inset-0 fade-out z-0 flex w-full h-full">
+        
+        <!-- Background base color (Soft Gray) -->
+        <div class="absolute inset-0 bg-gray-200 z-0"></div>
+
+        <!-- Huge Graphic Image (Background) -->
+        <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+             <div id="detail-graphic" class="animal-enter absolute inset-0 w-full h-full">
+                <!-- IMG injected via JS -->
+            </div>
+        </div>
+
+        <!-- Colored Semi-Circle Panel -->
+        <div id="detail-bg" class="detail-panel panel-left semi-circle-enter bg-stone-100 text-slate-900">
+            
+            <div class="w-full max-w-2xl mx-auto custom-scroll max-h-screen overflow-y-auto pb-10">
+                <!-- Content wrapper for staggering -->
+                <div id="detail-content" class="flex flex-col gap-4">
+                    <!-- Dynamic Header -->
+                    <div class="stagger-item delay-100 pt-16 md:pt-0">
+                        <h3 id="detail-knowing" class="text-lg md:text-xl font-semibold opacity-80 uppercase tracking-widest mb-1">Knowing</h3>
+                        <h2 id="detail-direction" class="heading-font text-5xl md:text-7xl font-black uppercase leading-none drop-shadow-md">Direction</h2>
+                    </div>
+
+                    <!-- Animal Info -->
+                    <div class="stagger-item delay-200 mt-2 flex items-center gap-3">
+                        <div class="w-10 h-[2px] bg-current opacity-50"></div>
+                        <p id="detail-animal" class="text-xl md:text-2xl font-medium italic opacity-90">Animal Name</p>
+                    </div>
+
+                    <!-- Bullet Points Container -->
+                    <div class="stagger-item delay-300 mt-6 bg-white/30 p-6 rounded-3xl backdrop-blur-md border border-white/20 shadow-sm">
+                        <h4 class="font-bold text-lg mb-4 opacity-90 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Wellness Strategies
+                        </h4>
+                        <ul id="detail-bullets" class="space-y-4 text-base md:text-lg text-black/80 font-medium">
+                            <!-- Bullets injected via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back Button (Floating top left) -->
+        <button onclick="closeDetail()" class="absolute top-6 left-6 z-50 bg-white/70 hover:bg-white text-gray-800 backdrop-blur-md p-3 md:px-6 md:py-3 rounded-full transition-all shadow-sm flex items-center gap-2 group border border-white/50">
+            <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span class="hidden md:inline font-bold tracking-wide">Back to Wheel</span>
+        </button>
+    </div>
+
+    <script>
+        // Data structure containing content based on BGSD Wellness Newsletters
+        const directionsData = {
+            north: {
+                direction: "North",
+                knowing: "Physical Knowing",
+                animal: "Buffalo (Paskwâwi-mostos)",
+                bgColor: "bg-stone-100", 
+                textColor: "text-slate-900",
+                layout: "left",
+                bullets: [
+                    `<strong>Rest is not a reward:</strong> Stop treating rest like something you have to earn. Rest is not a prize for having nothing left; it is part of necessary recovery.`,
+                    `<strong>Identify your rest deficit:</strong> Do you need physical rest, sensory rest, or social rest? Listen to your body and give yourself permission to step back.`,
+                    `<strong>Embrace the "Beautifully Adequate":</strong> Adopt the 80% rule. Your 80% is often higher than expected, and the last 20% usually costs 100% of your sanity.`
+                ],
+                img: "https://github.com/swampy-spec/gif/blob/main/Paskwa%20Mostos.png?raw=true"
+            },
+            east: {
+                direction: "East",
+                knowing: "Emotional Knowing",
+                animal: "Bear (Maskwa)",
+                bgColor: "bg-yellow-400",
+                textColor: "text-yellow-950",
+                layout: "right",
+                bullets: [
+                    `<strong>Acknowledge emotional labor:</strong> Managing your emotions while supporting others takes a toll. Naming it—"that was a lot"—helps validate the invisible work you do.`,
+                    `<strong>Clarify what's yours to carry:</strong> You can be supportive, empathetic, and professional without taking ownership of someone else's emotions or outcomes.`,
+                    `<strong>Close the loop:</strong> Emotional labor lingers. Build in release points after difficult moments: acknowledge it, reflect briefly, and consciously let it go.`
+                ],
+                img: "https://github.com/swampy-spec/gif/blob/main/Maskwa.png?raw=true"
+            },
+            south: {
+                direction: "South",
+                knowing: "Spiritual Knowing",
+                animal: "Grandmother Mouse (Âpikosisân)",
+                bgColor: "bg-red-600",
+                textColor: "text-white",
+                layout: "right",
+                bullets: [
+                    `<strong>Connect with your 'why':</strong> Spiritual wellness is about feeling aligned with your core values and bringing a sense of meaning and purpose to your busy days.`,
+                    `<strong>Begin with intention:</strong> Start your day with a mindful pause. Ask yourself: "What matters most today? How do I want to show up for others and myself?"`,
+                    `<strong>Notice and share gratitude:</strong> Appreciating small, meaningful moments fosters a deeper connection to the present and lifts up the people around you.`
+                ],
+                img: "https://github.com/swampy-spec/gif/blob/main/%C3%A2pakos%C3%AEs.png?raw=true"
+            },
+            west: {
+                direction: "West",
+                knowing: "Mental Knowing",
+                animal: "Thunderbird (Piyêsiw)",
+                bgColor: "bg-blue-600",
+                textColor: "text-white",
+                layout: "right",
+                bullets: [
+                    `<strong>Fire the Critic, Hire a Coach:</strong> A critic tells you you're a failure; a coach says, "That was a tough one. Let's pivot and try again tomorrow."`,
+                    `<strong>Apply the Work Friend Filter:</strong> If you wouldn't say it to your favorite coworker after a rough day, you aren't allowed to say it to yourself.`,
+                    `<strong>Forgive your old selves:</strong> Embrace the versions of yourself who worked hard to survive with what they knew at the time. Compassion helps us keep going.`
+                ],
+                img: "https://github.com/swampy-spec/gif/blob/main/Pehiysiw.png?raw=true"
+            }
+        };
+
+        // DOM Elements
+        const viewMain = document.getElementById('view-main');
+        const viewDetail = document.getElementById('view-detail');
+        const detailBg = document.getElementById('detail-bg');
+        const detailGraphic = document.getElementById('detail-graphic');
+        
+        // Detail DOM Text elements
+        const elDirection = document.getElementById('detail-direction');
+        const elKnowing = document.getElementById('detail-knowing');
+        const elAnimal = document.getElementById('detail-animal');
+        const elBullets = document.getElementById('detail-bullets');
+
+        function openDetail(directionId) {
+            const data = directionsData[directionId];
+            if (!data) return;
+
+            // 1. Populate data
+            elDirection.innerText = data.direction;
+            elKnowing.innerText = data.knowing;
+            elAnimal.innerText = `Animal: ${data.animal}`;
+            
+            // Build bullet points
+            elBullets.innerHTML = '';
+            data.bullets.forEach((bullet) => {
+                const li = document.createElement('li');
+                li.className = `flex items-start gap-3 p-3 rounded-2xl bg-white/40 shadow-sm ${data.textColor === 'text-slate-900' ? 'text-slate-800' : 'text-white'}`;
+                li.innerHTML = `<span class="mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-current opacity-70"></span> <span class="text-left">${bullet}</span>`;
+                elBullets.appendChild(li);
+            });
+
+            // Set colors & panel layout direction
+            const layout = data.layout || 'left';
+            const panelClass = layout === 'right' ? 'panel-right' : 'panel-left';
+            detailBg.className = `detail-panel ${panelClass} semi-circle-enter ${data.bgColor} ${data.textColor}`;
+            
+            // Set graphic background image layout - using object-cover to fill screen
+            const imgAlign = layout === 'right' ? 'object-[20%_center] md:object-left' : 'object-[80%_center] md:object-right';
+            detailGraphic.className = `animal-enter absolute inset-0 w-full h-full`;
+            detailGraphic.innerHTML = `<img src="${data.img}" alt="${data.animal}" class="w-full h-full object-cover ${imgAlign} opacity-30 md:opacity-40 drop-shadow-2xl" onerror="this.src='https://placehold.co/1000x1000/transparent/1f2937?text=${encodeURIComponent(data.animal)}'" />`;
+
+            // 2. Animate Main Out, Detail In
+            viewMain.classList.replace('fade-in', 'fade-out');
+            viewMain.style.zIndex = '0';
+            
+            viewDetail.classList.replace('fade-out', 'fade-in');
+            viewDetail.style.zIndex = '10';
+
+            // Trigger internal detail animations
+            setTimeout(() => {
+                detailBg.classList.add('semi-circle-active');
+                detailGraphic.classList.add('animal-active');
+                
+                // Stagger text items
+                const staggerItems = document.querySelectorAll('.stagger-item');
+                staggerItems.forEach((item, index) => {
+                    item.style.animationDelay = `${(index * 0.15) + 0.3}s`;
+                    item.style.transitionDelay = `${(index * 0.15) + 0.3}s`;
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                });
+            }, 50); // slight delay to allow display block to register
+        }
+
+        function closeDetail() {
+            // Animate internal elements out
+            detailBg.classList.remove('semi-circle-active');
+            detailGraphic.classList.remove('animal-active');
+            
+            const staggerItems = document.querySelectorAll('.stagger-item');
+            staggerItems.forEach((item) => {
+                item.style.transitionDelay = '0s';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+            });
+
+            // Swap views back
+            setTimeout(() => {
+                viewDetail.classList.replace('fade-in', 'fade-out');
+                viewDetail.style.zIndex = '0';
+                
+                viewMain.classList.replace('fade-out', 'fade-in');
+                viewMain.style.zIndex = '10';
+            }, 300); // wait for semi-circle to slide out a bit before fading
+        }
+    </script>
+</body>
+</html>
