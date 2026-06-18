@@ -11,7 +11,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6; /* Soft pastel gray (gray-100) */
-            color: #1f2937; /* gray-800 for contrast */
+            color: #172554; /* blue-950 for dark blue text contrast */
             overflow: hidden; /* Prevent scrolling, fully app-like feel */
         }
 
@@ -165,9 +165,9 @@
 
     <!-- Intro Landing View -->
     <div id="view-intro" class="absolute inset-0 flex flex-col items-center justify-center fade-in z-20 w-full h-full p-6 text-center">
-        <h1 class="text-5xl md:text-7xl text-gray-800 mb-6 drop-shadow-sm tracking-tight">Educator Wellness</h1>
+        <h1 class="text-5xl md:text-7xl text-blue-950 mb-6 drop-shadow-sm tracking-tight">Educator Wellness</h1>
         
-        <div class="max-w-2xl text-gray-600 text-base md:text-lg space-y-4 mb-12 px-4 leading-relaxed">
+        <div class="max-w-2xl text-blue-900/80 text-base md:text-lg space-y-4 mb-12 px-4 leading-relaxed">
             <p>The Four Directions honor the intellectual, emotional, spiritual, and physical journey of becoming a learner. These teachings deepen understanding of learning as a holistic experience, aligning mind and heart in a way that brings profound meaning to the journey.</p>
         </div>
         
@@ -182,7 +182,7 @@
             </div>
             
             <div class="relative z-10 w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-inner">
-                <span class="heading-font text-lg md:text-xl font-black text-gray-700 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Enter</span>
+                <span class="heading-font text-lg md:text-xl font-black text-blue-950 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Enter</span>
             </div>
         </div>
     </div>
@@ -192,15 +192,15 @@
         
         <!-- Header -->
         <div class="text-center mb-8 max-w-2xl z-20">
-            <h2 class="text-3xl md:text-4xl text-gray-800 mb-2 drop-shadow-sm">Choose a Direction</h2>
-            <p class="text-gray-500 text-sm md:text-base px-4">Click on a section of the wheel to explore strategies</p>
+            <h2 class="text-3xl md:text-4xl text-blue-950 mb-2 drop-shadow-sm">Choose a Direction</h2>
+            <p class="text-blue-900/70 text-sm md:text-base px-4">Click on a section of the wheel to explore strategies</p>
         </div>
 
         <!-- The Medicine Wheel -->
         <div class="relative w-[85vw] h-[85vw] max-w-[500px] max-h-[500px] rounded-full overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-8 border-white shrink-0 bg-white">
             
             <!-- North (White) -->
-            <div onclick="openDetail('north')" class="wheel-wedge wedge-north absolute inset-0 bg-stone-50 cursor-pointer flex flex-col items-center pt-8 md:pt-12 text-slate-800 group">
+            <div onclick="openDetail('north')" class="wheel-wedge wedge-north absolute inset-0 bg-stone-50 cursor-pointer flex flex-col items-center pt-8 md:pt-12 text-blue-950 group">
                 <div class="wedge-text flex flex-col items-center">
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">North</span>
                     <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-center px-10">Physical & Rest</span>
@@ -208,7 +208,7 @@
             </div>
 
             <!-- East (Yellow) -->
-            <div onclick="openDetail('east')" class="wheel-wedge wedge-east absolute inset-0 bg-yellow-400 cursor-pointer flex flex-col justify-center items-end pr-6 md:pr-10 text-yellow-950 group">
+            <div onclick="openDetail('east')" class="wheel-wedge wedge-east absolute inset-0 bg-yellow-400 cursor-pointer flex flex-col justify-center items-end pr-6 md:pr-10 text-blue-950 group">
                 <div class="wedge-text flex flex-col items-end">
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">East</span>
                     <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-right pl-10">Emotional Labor</span>
@@ -245,13 +245,13 @@
 
         <!-- Huge Graphic Image (Background) -->
         <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-             <div id="detail-graphic" class="animal-enter absolute inset-0 w-full h-full">
+             <div id="detail-graphic" class="animal-enter graphic-container">
                 <!-- IMG injected via JS -->
             </div>
         </div>
 
         <!-- Colored Semi-Circle Panel -->
-        <div id="detail-bg" class="detail-panel panel-left semi-circle-enter bg-stone-100 text-slate-900">
+        <div id="detail-bg" class="detail-panel panel-left semi-circle-enter bg-stone-100 text-blue-950">
             
             <div class="w-full max-w-2xl mx-auto custom-scroll max-h-screen overflow-y-auto pb-10">
                 <!-- Content wrapper for staggering -->
@@ -274,7 +274,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                             Wellness Strategies
                         </h4>
-                        <ul id="detail-bullets" class="space-y-4 text-base md:text-lg text-black/80 font-medium">
+                        <ul id="detail-bullets" class="space-y-4 text-base md:text-lg text-blue-950/80 font-medium">
                             <!-- Bullets injected via JS -->
                         </ul>
                     </div>
@@ -283,21 +283,21 @@
         </div>
 
         <!-- Back Button (Floating top left) -->
-        <button onclick="closeDetail()" class="absolute top-6 left-6 z-50 bg-white/70 hover:bg-white text-gray-800 backdrop-blur-md p-3 md:px-6 md:py-3 rounded-full transition-all shadow-sm flex items-center gap-2 group border border-white/50">
+        <button onclick="closeDetail()" class="absolute top-6 left-6 z-50 bg-white/70 hover:bg-white text-blue-950 backdrop-blur-md p-3 md:px-6 md:py-3 rounded-full transition-all shadow-sm flex items-center gap-2 group border border-white/50">
             <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             <span class="hidden md:inline font-bold tracking-wide">Back to Wheel</span>
         </button>
     </div>
 
     <script>
-        // Data structure containing content and SVGs for each direction
+        // Data structure containing content based on BGSD Wellness Newsletters
         const directionsData = {
             north: {
                 direction: "North",
                 knowing: "Physical Knowing",
                 animal: "Buffalo (Paskwâwi-mostos)",
                 bgColor: "bg-stone-100", 
-                textColor: "text-slate-900",
+                textColor: "text-blue-950",
                 layout: "left",
                 bullets: [
                     `<strong>Rest is not a reward:</strong> Stop treating rest like something you have to earn. Rest is not a prize for having nothing left; it is part of necessary recovery.`,
@@ -311,7 +311,7 @@
                 knowing: "Emotional Knowing",
                 animal: "Bear (Maskwa)",
                 bgColor: "bg-yellow-400",
-                textColor: "text-yellow-950",
+                textColor: "text-blue-950",
                 layout: "right",
                 bullets: [
                     `<strong>Acknowledge emotional labor:</strong> Managing your emotions while supporting others takes a toll. Naming it—"that was a lot"—helps validate the invisible work you do.`,
@@ -385,7 +385,7 @@
             elBullets.innerHTML = '';
             data.bullets.forEach((bullet) => {
                 const li = document.createElement('li');
-                li.className = `flex items-start gap-3 p-3 rounded-2xl bg-white/40 shadow-sm ${data.textColor === 'text-slate-900' ? 'text-slate-800' : 'text-white'}`;
+                li.className = `flex items-start gap-3 p-3 rounded-2xl bg-white/40 shadow-sm ${data.textColor === 'text-blue-950' ? 'text-blue-950' : 'text-white'}`;
                 li.innerHTML = `<span class="mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-current opacity-70"></span> <span class="text-left">${bullet}</span>`;
                 elBullets.appendChild(li);
             });
