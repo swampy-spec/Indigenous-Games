@@ -299,6 +299,7 @@
                 bgColor: "bg-stone-100", 
                 textColor: "text-blue-950",
                 layout: "left",
+                anecdote: "The Buffalo teaches us to utilize all gifts and not waste anything, reminding us of the physical sustenance and grounding we receive from the earth.",
                 bullets: [
                     `<strong>Rest is not a reward:</strong> Stop treating rest like something you have to earn. Rest is not a prize for having nothing left; it is part of necessary recovery.`,
                     `<strong>Identify your rest deficit:</strong> Do you need physical rest, sensory rest, or social rest? Listen to your body and give yourself permission to step back.`,
@@ -313,6 +314,7 @@
                 bgColor: "bg-yellow-400",
                 textColor: "text-blue-950",
                 layout: "right",
+                anecdote: "The Bear, waking from its long winter rest, teaches us emotional knowing—focusing on empathy, compassion, and caring for others as we would our own cubs.",
                 bullets: [
                     `<strong>Acknowledge emotional labor:</strong> Managing your emotions while supporting others takes a toll. Naming it—"that was a lot"—helps validate the invisible work you do.`,
                     `<strong>Clarify what's yours to carry:</strong> You can be supportive, empathetic, and professional without taking ownership of someone else's emotions or outcomes.`,
@@ -327,6 +329,7 @@
                 bgColor: "bg-red-600",
                 textColor: "text-white",
                 layout: "right",
+                anecdote: "Grandmother Mouse observes the world closely from the ground, teaching us spiritual knowing—reminding us to be nurturing, kind, and attentive to the small details of life.",
                 bullets: [
                     `<strong>Connect with your 'why':</strong> Spiritual wellness is about feeling aligned with your core values and bringing a sense of meaning and purpose to your busy days.`,
                     `<strong>Begin with intention:</strong> Start your day with a mindful pause. Ask yourself: "What matters most today? How do I want to show up for others and myself?"`,
@@ -341,6 +344,7 @@
                 bgColor: "bg-blue-600",
                 textColor: "text-white",
                 layout: "right",
+                anecdote: "The Thunderbird brings the storms of change, teaching us mental knowing—encouraging us to be respectful, confident, and courageous in our thoughts and actions.",
                 bullets: [
                     `<strong>Fire the Critic, Hire a Coach:</strong> A critic tells you you're a failure; a coach says, "That was a tough one. Let's pivot and try again tomorrow."`,
                     `<strong>Apply the Work Friend Filter:</strong> If you wouldn't say it to your favorite coworker after a rough day, you aren't allowed to say it to yourself.`,
@@ -379,7 +383,9 @@
             // 1. Populate data
             elDirection.innerText = data.direction;
             elKnowing.innerText = data.knowing;
-            elAnimal.innerText = `Animal: ${data.animal}`;
+            
+            // Add Animal and Anecdote
+            elAnimal.innerHTML = `<span class="font-bold">Animal:</span> ${data.animal}<br><span class="text-sm font-normal opacity-85 mt-2 block leading-snug">${data.anecdote}</span>`;
             
             // Build bullet points
             elBullets.innerHTML = '';
