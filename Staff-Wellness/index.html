@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+  4 Direction Teachings  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BGSD Staff Wellness Wheel</title>
+    <title>BGSD Wellness & Balance</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -46,15 +46,15 @@
         /* View Transition Animations */
         .fade-out {
             opacity: 0;
-            transform: scale(0.9);
+            transform: scale(0.95);
             pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
         .fade-in {
             opacity: 1;
             transform: scale(1);
             pointer-events: auto;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         /* Dynamic Detail Panel Layout */
@@ -159,30 +159,68 @@
             background: rgba(0,0,0,0.2); 
             border-radius: 10px;
         }
+
+        /* Card Hover Effects */
+        .choice-card {
+            transition: all 0.3s ease;
+        }
+        .choice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="relative w-full h-screen">
 
     <!-- Intro Landing View -->
-    <div id="view-intro" class="absolute inset-0 flex flex-col items-center justify-center fade-in z-20 w-full h-full p-6 text-center">
-        <h1 class="text-5xl md:text-7xl text-blue-950 mb-6 drop-shadow-sm tracking-tight">Educator Wellness</h1>
+    <div id="view-intro" class="absolute inset-0 flex flex-col items-center justify-center fade-in z-20 w-full h-full p-4 text-center">
         
-        <div class="max-w-2xl text-blue-900/80 text-base md:text-lg space-y-4 mb-12 px-4 leading-relaxed">
-            <p>The Four Directions honor the intellectual, emotional, spiritual, and physical journey of becoming a learner. These teachings deepen understanding of learning as a holistic experience, aligning mind and heart in a way that brings profound meaning to the journey.</p>
+        <div class="text-center mb-6 md:mb-10 max-w-3xl z-20 px-4 mt-8 md:mt-0">
+            <h1 class="text-4xl md:text-6xl text-blue-950 mb-4 drop-shadow-sm tracking-tight heading-font">Finding Our Balance</h1>
+            <p class="text-blue-900/80 text-sm md:text-base lg:text-lg font-medium leading-relaxed max-w-2xl mx-auto">
+                The Four Directions honor the intellectual, emotional, spiritual, and physical journey of becoming a learner. These teachings deepen understanding of learning as a holistic experience, aligning mind and heart in a way that brings profound meaning to the journey.
+            </p>
+            <p class="text-xs md:text-sm font-bold opacity-70 uppercase tracking-widest pt-6 text-blue-950">Select a path to begin</p>
         </div>
         
-        <!-- Interactive Enter Circle -->
-        <div onclick="enterWheel()" class="relative w-32 h-32 md:w-40 md:h-40 bg-white rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.1)] border-[6px] border-gray-100 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-500 group overflow-hidden">
-            <!-- Decorative mini color wedges in the background of the button -->
-            <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500 rounded-full overflow-hidden">
-                <div class="absolute top-0 left-0 w-1/2 h-1/2 bg-blue-600"></div> <!-- West -->
-                <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-stone-500"></div> <!-- North -->
-                <div class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-red-600"></div> <!-- South -->
-                <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-yellow-400"></div> <!-- East -->
-            </div>
+        <!-- Interactive Intro Wheel with Colored Rim -->
+        <div class="relative w-[85vw] h-[85vw] max-w-[450px] max-h-[450px] md:max-w-[500px] md:max-h-[500px] rounded-full overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] shrink-0 transition-transform duration-500" style="background: conic-gradient(from -45deg, #ffffff 0deg 90deg, #facc15 90deg 180deg, #dc2626 180deg 270deg, #2563eb 270deg 360deg);">
             
-            <div class="relative z-10 w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-inner">
-                <span class="heading-font text-lg md:text-xl font-black text-blue-950 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Enter</span>
+            <!-- The inner pastel wedges container, inset to reveal the outer colored rim -->
+            <div class="absolute inset-[12px] md:inset-[20px] rounded-full overflow-hidden bg-white shadow-[inset_0_0_15px_rgba(0,0,0,0.05)]">
+                
+                <!-- North - Educator Wellness -->
+                <div onclick="enterWheel('staff')" class="wheel-wedge wedge-north absolute inset-0 bg-slate-50 hover:bg-slate-100 cursor-pointer flex flex-col items-center pt-8 md:pt-12 text-slate-800 group transition-colors">
+                    <div class="wedge-text flex flex-col items-center">
+                        <span class="heading-font text-lg md:text-2xl font-black uppercase tracking-wider text-center leading-tight">Educator<br>Wellness</span>
+                    </div>
+                </div>
+
+                <!-- East - Student Balance -->
+                <div onclick="enterWheel('student')" class="wheel-wedge wedge-east absolute inset-0 bg-yellow-50 hover:bg-yellow-100 cursor-pointer flex flex-col justify-center items-end pr-6 md:pr-10 text-yellow-900 group transition-colors">
+                    <div class="wedge-text flex flex-col items-end">
+                        <span class="heading-font text-lg md:text-2xl font-black uppercase tracking-wider text-right leading-tight">Student<br>Balance</span>
+                    </div>
+                </div>
+
+                <!-- South - The Teachings -->
+                <div onclick="openModal('teachings')" class="wheel-wedge wedge-south absolute inset-0 bg-red-50 hover:bg-red-100 cursor-pointer flex flex-col items-center justify-end pb-8 md:pb-12 text-red-900 group transition-colors">
+                    <div class="wedge-text flex flex-col items-center">
+                        <span class="heading-font text-lg md:text-2xl font-black uppercase tracking-wider text-center leading-tight">The<br>Teachings</span>
+                    </div>
+                </div>
+
+                <!-- West - Daily Reflection -->
+                <div onclick="openModal('reflection')" class="wheel-wedge wedge-west absolute inset-0 bg-blue-50 hover:bg-blue-100 cursor-pointer flex flex-col justify-center items-start pl-6 md:pl-10 text-blue-900 group transition-colors">
+                    <div class="wedge-text flex flex-col items-start">
+                        <span class="heading-font text-lg md:text-2xl font-black uppercase tracking-wider text-left leading-tight">Daily<br><span class="text-base md:text-xl">Reflection</span></span>
+                    </div>
+                </div>
+                
+                <!-- Center decorative circle -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-white rounded-full z-10 shadow-md flex items-center justify-center pointer-events-none">
+                    <div class="w-4 h-4 rounded-full bg-gray-300"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -190,10 +228,16 @@
     <!-- Main View (The Wheel) -->
     <div id="view-main" class="absolute inset-0 flex flex-col items-center justify-center fade-out z-0 w-full h-full p-4">
         
+        <!-- Back to Menu Button -->
+        <button onclick="backToMenu()" class="absolute top-6 left-6 z-20 bg-white/50 hover:bg-white text-blue-950 backdrop-blur-sm px-4 py-2 rounded-full transition-all shadow-sm flex items-center gap-2 border border-blue-900/10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+            <span class="font-semibold text-sm">Main Menu</span>
+        </button>
+
         <!-- Header -->
-        <div class="text-center mb-8 max-w-2xl z-20">
-            <h2 class="text-3xl md:text-4xl text-blue-950 mb-2 drop-shadow-sm">Choose a Direction</h2>
-            <p class="text-blue-900/70 text-sm md:text-base px-4">Click on a section of the wheel to explore strategies</p>
+        <div class="text-center mb-8 max-w-2xl z-20 mt-8 md:mt-0">
+            <h2 id="main-title" class="text-3xl md:text-5xl text-blue-950 mb-3 drop-shadow-sm heading-font">Title</h2>
+            <p id="main-subtitle" class="text-blue-900/70 text-sm md:text-base px-4 font-medium">Subtitle</p>
         </div>
 
         <!-- The Medicine Wheel -->
@@ -203,7 +247,7 @@
             <div onclick="openDetail('north')" class="wheel-wedge wedge-north absolute inset-0 bg-stone-50 cursor-pointer flex flex-col items-center pt-8 md:pt-12 text-blue-950 group">
                 <div class="wedge-text flex flex-col items-center">
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">North</span>
-                    <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-center px-10">Physical & Rest</span>
+                    <span id="label-north" class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-center px-10">Label</span>
                 </div>
             </div>
 
@@ -211,14 +255,14 @@
             <div onclick="openDetail('east')" class="wheel-wedge wedge-east absolute inset-0 bg-yellow-400 cursor-pointer flex flex-col justify-center items-end pr-6 md:pr-10 text-blue-950 group">
                 <div class="wedge-text flex flex-col items-end">
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">East</span>
-                    <span class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-right pl-10">Emotional Labor</span>
+                    <span id="label-east" class="text-xs md:text-sm font-semibold opacity-80 mt-1 text-right pl-10">Label</span>
                 </div>
             </div>
 
             <!-- South (Red) -->
             <div onclick="openDetail('south')" class="wheel-wedge wedge-south absolute inset-0 bg-red-600 cursor-pointer flex flex-col items-center justify-end pb-8 md:pb-12 text-white group">
                 <div class="wedge-text flex flex-col items-center">
-                    <span class="text-xs md:text-sm font-semibold opacity-90 mb-1 text-center px-10">Spiritual Wellness</span>
+                    <span id="label-south" class="text-xs md:text-sm font-semibold opacity-90 mb-1 text-center px-10">Label</span>
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">South</span>
                 </div>
             </div>
@@ -227,7 +271,7 @@
             <div onclick="openDetail('west')" class="wheel-wedge wedge-west absolute inset-0 bg-blue-600 cursor-pointer flex flex-col justify-center items-start pl-6 md:pl-10 text-white group">
                 <div class="wedge-text flex flex-col items-start">
                     <span class="heading-font text-xl md:text-3xl font-black uppercase tracking-wider">West</span>
-                    <span class="text-xs md:text-sm font-semibold opacity-90 mt-1 text-left pr-10">Mental & Self-Talk</span>
+                    <span id="label-west" class="text-xs md:text-sm font-semibold opacity-90 mt-1 text-left pr-10">Label</span>
                 </div>
             </div>
 
@@ -238,6 +282,7 @@
         </div>
     </div>
 
+    <!-- Detail View -->
     <div id="view-detail" class="absolute inset-0 fade-out z-0 flex w-full h-full">
         
         <!-- Background base color (Soft Gray) -->
@@ -272,7 +317,7 @@
                     <div class="stagger-item delay-300 mt-6 bg-white/30 p-6 rounded-3xl backdrop-blur-md border border-white/20 shadow-sm">
                         <h4 class="font-bold text-lg mb-4 opacity-90 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            Wellness Strategies
+                            <span id="detail-strategies-title">Strategies</span>
                         </h4>
                         <ul id="detail-bullets" class="space-y-4 text-base md:text-lg text-blue-950/80 font-medium">
                             <!-- Bullets injected via JS -->
@@ -289,68 +334,139 @@
         </button>
     </div>
 
+    <!-- Info Modal -->
+    <div id="info-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute inset-0 bg-blue-950/40 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-[90vw] max-h-[85vh] overflow-y-auto custom-scroll relative z-10 shadow-2xl transform transition-transform duration-300 scale-95" id="info-modal-content">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
     <script>
-        // Data structure containing content based on BGSD Wellness Newsletters
-        const directionsData = {
-            north: {
-                direction: "North",
-                knowing: "Physical Knowing",
-                animal: "Buffalo (Paskwâwi-mostos)",
-                bgColor: "bg-stone-100", 
-                textColor: "text-blue-950",
-                layout: "left",
-                anecdote: "The Buffalo teaches us to utilize all gifts and not waste anything, reminding us of the physical sustenance and grounding we receive from the earth.",
-                bullets: [
-                    `<strong>Rest is not a reward:</strong> Stop treating rest like something you have to earn. Rest is not a prize for having nothing left; it is part of necessary recovery.`,
-                    `<strong>Identify your rest deficit:</strong> Do you need physical rest, sensory rest, or social rest? Listen to your body and give yourself permission to step back.`,
-                    `<strong>Embrace the "Beautifully Adequate":</strong> Adopt the 80% rule. Your 80% is often higher than expected, and the last 20% usually costs 100% of your sanity.`
-                ],
-                img: "https://github.com/swampy-spec/gif/blob/main/Paskwa%20Mostos.png?raw=true"
+        // Store current mode
+        let currentMode = 'staff';
+
+        // Combined App Data Structure
+        const appData = {
+            staff: {
+                mainTitle: "Educator Wellness",
+                mainSubtitle: "Click on a direction to explore holistic strategies for your mind, heart, body, and spirit",
+                strategiesTitle: "Wellness Strategies",
+                labels: { north: "Physical & Rest", east: "Emotional Labor", south: "Spiritual Wellness", west: "Mental & Self-Talk" },
+                directions: {
+                    north: {
+                        direction: "North",
+                        knowing: "Physical Knowing",
+                        animal: "Buffalo (Paskwâwi-mostos)",
+                        bgColor: "bg-stone-100", textColor: "text-blue-950", layout: "left",
+                        anecdote: "The Buffalo teaches us to utilize all gifts and not waste anything, reminding us of the physical sustenance and grounding we receive from the earth.",
+                        bullets: [
+                            `<strong>Rest is not a reward:</strong> Stop treating rest like something you have to earn. Rest is not a prize for having nothing left; it is part of necessary recovery.`,
+                            `<strong>Identify your rest deficit:</strong> Do you need physical rest, sensory rest, or social rest? Listen to your body and give yourself permission to step back.`,
+                            `<strong>Embrace the "Beautifully Adequate":</strong> Adopt the 80% rule. Your 80% is often higher than expected, and the last 20% usually costs 100% of your sanity.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Paskwa%20Mostos.png?raw=true"
+                    },
+                    east: {
+                        direction: "East",
+                        knowing: "Emotional Knowing",
+                        animal: "Bear (Maskwa)",
+                        bgColor: "bg-yellow-400", textColor: "text-blue-950", layout: "right",
+                        anecdote: "The Bear, waking from its long winter rest, teaches us emotional knowing—focusing on empathy, compassion, and caring for others as we would our own cubs.",
+                        bullets: [
+                            `<strong>Acknowledge emotional labor:</strong> Managing your emotions while supporting others takes a toll. Naming it—"that was a lot"—helps validate the invisible work you do.`,
+                            `<strong>Clarify what's yours to carry:</strong> You can be supportive, empathetic, and professional without taking ownership of someone else's emotions or outcomes.`,
+                            `<strong>Close the loop:</strong> Emotional labor lingers. Build in release points after difficult moments: acknowledge it, reflect briefly, and consciously let it go.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Maskwa.png?raw=true"
+                    },
+                    south: {
+                        direction: "South",
+                        knowing: "Spiritual Knowing",
+                        animal: "Grandmother Mouse (Âpikosisân)",
+                        bgColor: "bg-red-600", textColor: "text-white", layout: "right",
+                        anecdote: "Grandmother Mouse observes the world closely from the ground, teaching us spiritual knowing—reminding us to be nurturing, kind, and attentive to the small details of life.",
+                        bullets: [
+                            `<strong>Connect with your 'why':</strong> Spiritual wellness is about feeling aligned with your core values and bringing a sense of meaning and purpose to your busy days.`,
+                            `<strong>Begin with intention:</strong> Start your day with a mindful pause. Ask yourself: "What matters most today? How do I want to show up for others and myself?"`,
+                            `<strong>Notice and share gratitude:</strong> Appreciating small, meaningful moments fosters a deeper connection to the present and lifts up the people around you.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/%C3%A2pakos%C3%AEs.png?raw=true"
+                    },
+                    west: {
+                        direction: "West",
+                        knowing: "Mental Knowing",
+                        animal: "Thunderbird (Piyêsiw)",
+                        bgColor: "bg-blue-600", textColor: "text-white", layout: "right",
+                        anecdote: "The Thunderbird brings the storms of change, teaching us mental knowing—encouraging us to be respectful, confident, and courageous in our thoughts and actions.",
+                        bullets: [
+                            `<strong>Fire the Critic, Hire a Coach:</strong> A critic tells you you're a failure; a coach says, "That was a tough one. Let's pivot and try again tomorrow."`,
+                            `<strong>Apply the Work Friend Filter:</strong> If you wouldn't say it to your favorite coworker after a rough day, you aren't allowed to say it to yourself.`,
+                            `<strong>Forgive your old selves:</strong> Embrace the versions of yourself who worked hard to survive with what they knew at the time. Compassion helps us keep going.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Pehiysiw.png?raw=true"
+                    }
+                }
             },
-            east: {
-                direction: "East",
-                knowing: "Emotional Knowing",
-                animal: "Bear (Maskwa)",
-                bgColor: "bg-yellow-400",
-                textColor: "text-blue-950",
-                layout: "right",
-                anecdote: "The Bear, waking from its long winter rest, teaches us emotional knowing—focusing on empathy, compassion, and caring for others as we would our own cubs.",
-                bullets: [
-                    `<strong>Acknowledge emotional labor:</strong> Managing your emotions while supporting others takes a toll. Naming it—"that was a lot"—helps validate the invisible work you do.`,
-                    `<strong>Clarify what's yours to carry:</strong> You can be supportive, empathetic, and professional without taking ownership of someone else's emotions or outcomes.`,
-                    `<strong>Close the loop:</strong> Emotional labor lingers. Build in release points after difficult moments: acknowledge it, reflect briefly, and consciously let it go.`
-                ],
-                img: "https://github.com/swampy-spec/gif/blob/main/Maskwa.png?raw=true"
-            },
-            south: {
-                direction: "South",
-                knowing: "Spiritual Knowing",
-                animal: "Grandmother Mouse (Âpikosisân)",
-                bgColor: "bg-red-600",
-                textColor: "text-white",
-                layout: "right",
-                anecdote: "Grandmother Mouse observes the world closely from the ground, teaching us spiritual knowing—reminding us to be nurturing, kind, and attentive to the small details of life.",
-                bullets: [
-                    `<strong>Connect with your 'why':</strong> Spiritual wellness is about feeling aligned with your core values and bringing a sense of meaning and purpose to your busy days.`,
-                    `<strong>Begin with intention:</strong> Start your day with a mindful pause. Ask yourself: "What matters most today? How do I want to show up for others and myself?"`,
-                    `<strong>Notice and share gratitude:</strong> Appreciating small, meaningful moments fosters a deeper connection to the present and lifts up the people around you.`
-                ],
-                img: "https://github.com/swampy-spec/gif/blob/main/%C3%A2pakos%C3%AEs.png?raw=true"
-            },
-            west: {
-                direction: "West",
-                knowing: "Mental Knowing",
-                animal: "Thunderbird (Piyêsiw)",
-                bgColor: "bg-blue-600",
-                textColor: "text-white",
-                layout: "right",
-                anecdote: "The Thunderbird brings the storms of change, teaching us mental knowing—encouraging us to be respectful, confident, and courageous in our thoughts and actions.",
-                bullets: [
-                    `<strong>Fire the Critic, Hire a Coach:</strong> A critic tells you you're a failure; a coach says, "That was a tough one. Let's pivot and try again tomorrow."`,
-                    `<strong>Apply the Work Friend Filter:</strong> If you wouldn't say it to your favorite coworker after a rough day, you aren't allowed to say it to yourself.`,
-                    `<strong>Forgive your old selves:</strong> Embrace the versions of yourself who worked hard to survive with what they knew at the time. Compassion helps us keep going.`
-                ],
-                img: "https://github.com/swampy-spec/gif/blob/main/Pehiysiw.png?raw=true"
+            student: {
+                mainTitle: "Finding Our Balance",
+                mainSubtitle: "Click on a direction to explore holistic strategies for the mind, heart, body, and spirit",
+                strategiesTitle: "Conflict Strategies",
+                labels: { north: "Physical Knowing", east: "Emotional Knowing", south: "Spiritual Knowing", west: "Mental Knowing" },
+                directions: {
+                    north: {
+                        direction: "North",
+                        knowing: "Physical Knowing",
+                        animal: "Buffalo (Paskwâwi-mostos)",
+                        bgColor: "bg-stone-100", textColor: "text-blue-950", layout: "left",
+                        anecdote: "The Buffalo teaches us to utilize all gifts and not waste anything, reminding us of the physical sustenance and grounding we receive from the earth.",
+                        bullets: [
+                            `Ask yourself: <strong>"What does my body need right now to calm down?"</strong>`,
+                            `Listen to your body's needs; if you feel overwhelmed, take a physical break or walk away to cool down.`,
+                            `Show gratitude for your friendships and classmates, treating those relationships as gifts you do not want to waste.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Paskwa%20Mostos.png?raw=true"
+                    },
+                    east: {
+                        direction: "East",
+                        knowing: "Emotional Knowing",
+                        animal: "Bear (Maskwa)",
+                        bgColor: "bg-yellow-400", textColor: "text-blue-950", layout: "right",
+                        anecdote: "The Bear, waking from its long winter rest, teaches us emotional knowing—focusing on empathy, compassion, and caring for others as we would our own cubs.",
+                        bullets: [
+                            `Ask yourself: <strong>"How am I feeling, and how is my friend feeling?"</strong>`,
+                            `Try to show empathy and compassion to others when there is a disagreement.`,
+                            `Allow yourself to process and honor your emotions in healthy ways before trying to fix the problem.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Maskwa.png?raw=true"
+                    },
+                    south: {
+                        direction: "South",
+                        knowing: "Spiritual Knowing",
+                        animal: "Grandmother Mouse (Âpikosisân)",
+                        bgColor: "bg-red-600", textColor: "text-white", layout: "right",
+                        anecdote: "Grandmother Mouse observes the world closely from the ground, teaching us spiritual knowing—reminding us to be nurturing, kind, and attentive to the small details of life.",
+                        bullets: [
+                            `Ask yourself: <strong>"Are my words and actions helpful?"</strong>`,
+                            `Always choose to be nurturing and kind, even when you are upset.`,
+                            `Take a quiet moment for reflection to help you connect with your inner peace before you react.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/%C3%A2pakos%C3%AEs.png?raw=true"
+                    },
+                    west: {
+                        direction: "West",
+                        knowing: "Mental Knowing",
+                        animal: "Thunderbird (Piyêsiw)",
+                        bgColor: "bg-blue-600", textColor: "text-white", layout: "right",
+                        anecdote: "The Thunderbird brings the storms of change, teaching us mental knowing—encouraging us to be respectful, confident, and courageous in our thoughts and actions.",
+                        bullets: [
+                            `Ask yourself: <strong>"How can we fix this together?"</strong>`,
+                            `Have the courage to speak up, but always make sure you are being respectful.`,
+                            `Engage your mind by using problem-solving skills to find a fair compromise.`
+                        ],
+                        img: "https://github.com/swampy-spec/gif/blob/main/Pehiysiw.png?raw=true"
+                    }
+                }
             }
         };
 
@@ -366,8 +482,74 @@
         const elKnowing = document.getElementById('detail-knowing');
         const elAnimal = document.getElementById('detail-animal');
         const elBullets = document.getElementById('detail-bullets');
+        const elStrategiesTitle = document.getElementById('detail-strategies-title');
+        
+        // Modal DOM Elements
+        const infoModal = document.getElementById('info-modal');
+        const infoModalContent = document.getElementById('info-modal-content');
 
-        function enterWheel() {
+        // Modal Content Data
+        const modalData = {
+            teachings: {
+                title: "The Teachings",
+                body: `
+                    <p class='mb-3'>For First Nations peoples, such as the nêhiyawak (Cree), the concept of the <strong>'four-part person'</strong> guides us to live a balanced, fulfilling, and harmonious life.</p>
+                    <p class='mb-4'>Many aspects of our world can be understood in four parts. The <strong>four stages of life</strong>: baby, adolescence, adult, and <em>kêtêyah</em> (Elder). The <strong>four seasons</strong>: spring, summer, fall, and winter. The <strong>four types of creatures</strong>: those that fly, the four-legged, the two-legged, and those that crawl. We allow these four parts to guide and shape our lives.</p>
+                    <p class='mb-2 font-bold text-blue-950'>Daily Activities for Balance:</p>
+                    <ul class='text-left list-none space-y-2 mb-5 text-sm md:text-base'>
+                        <li class='flex items-start gap-2'><span class="flex-shrink-0 w-3 h-3 rounded-full bg-yellow-400 mt-1"></span><span><strong>East (Emotional):</strong> Check in with a friend, practice empathy, or journal your feelings.</span></li>
+                        <li class='flex items-start gap-2'><span class="flex-shrink-0 w-3 h-3 rounded-full bg-red-600 mt-1"></span><span><strong>South (Spiritual):</strong> Spend a quiet moment in nature, volunteer, or connect with your 'why'.</span></li>
+                        <li class='flex items-start gap-2'><span class="flex-shrink-0 w-3 h-3 rounded-full bg-blue-600 mt-1"></span><span><strong>West (Mental):</strong> Learn something new, read, or challenge a negative thought.</span></li>
+                        <li class='flex items-start gap-2'><span class="flex-shrink-0 w-3 h-3 rounded-full bg-stone-300 mt-1 border border-stone-400"></span><span><strong>North (Physical):</strong> Take a walk, stretch, drink water, or prioritize a good night's sleep.</span></li>
+                    </ul>
+                    <div class='bg-blue-50 p-4 rounded-xl border border-blue-100'>
+                        <p class='font-semibold text-blue-900 italic text-sm md:text-base'>If you fulfill these four parts each day—even in small ways—your day will be full, and you will have improved your overall well-being by that extra 1 percent.</p>
+                    </div>
+                `
+            },
+            reflection: {
+                title: "Daily Reflection",
+                body: "<p class='mb-4 italic text-blue-900/80 font-medium'>\"What are you carrying that no one sees?\"</p><p class='mb-4'>Take a quiet moment to pause and breathe. Ask yourself:</p><ul class='text-left list-disc pl-5 space-y-3 mb-6'><li>What is one thing I am grateful for today?</li><li>Where am I holding tension in my body?</li><li>How can I show myself the same kindness I give to others?</li></ul><p class='font-semibold text-blue-950'>Balance is not a destination, but a daily practice.</p>"
+            }
+        };
+
+        function openModal(type) {
+            const data = modalData[type];
+            infoModalContent.innerHTML = `
+                <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-blue-950 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <h2 class="text-3xl font-black text-blue-950 mb-4 heading-font">${data.title}</h2>
+                <div class="text-blue-900/80 text-base md:text-lg leading-relaxed">
+                    ${data.body}
+                </div>
+            `;
+            
+            infoModal.classList.remove('opacity-0', 'pointer-events-none');
+            infoModal.classList.add('opacity-100', 'pointer-events-auto');
+            infoModalContent.classList.remove('scale-95');
+            infoModalContent.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            infoModal.classList.remove('opacity-100', 'pointer-events-auto');
+            infoModal.classList.add('opacity-0', 'pointer-events-none');
+            infoModalContent.classList.remove('scale-100');
+            infoModalContent.classList.add('scale-95');
+        }
+
+        function enterWheel(mode) {
+            currentMode = mode;
+            const modeData = appData[currentMode];
+
+            // Update main wheel labels and text dynamically
+            document.getElementById('main-title').innerText = modeData.mainTitle;
+            document.getElementById('main-subtitle').innerText = modeData.mainSubtitle;
+            document.getElementById('label-north').innerText = modeData.labels.north;
+            document.getElementById('label-east').innerText = modeData.labels.east;
+            document.getElementById('label-south').innerText = modeData.labels.south;
+            document.getElementById('label-west').innerText = modeData.labels.west;
+
             // Animate Intro Out, Main In
             viewIntro.classList.replace('fade-in', 'fade-out');
             viewIntro.style.zIndex = '0';
@@ -376,11 +558,22 @@
             viewMain.style.zIndex = '10';
         }
 
+        function backToMenu() {
+            // Animate Main Out, Intro In
+            viewMain.classList.replace('fade-in', 'fade-out');
+            viewMain.style.zIndex = '0';
+            
+            viewIntro.classList.replace('fade-out', 'fade-in');
+            viewIntro.style.zIndex = '20';
+        }
+
         function openDetail(directionId) {
-            const data = directionsData[directionId];
+            const modeData = appData[currentMode];
+            const data = modeData.directions[directionId];
             if (!data) return;
 
             // 1. Populate data
+            elStrategiesTitle.innerText = modeData.strategiesTitle;
             elDirection.innerText = data.direction;
             elKnowing.innerText = data.knowing;
             
@@ -452,4 +645,4 @@
         }
     </script>
 </body>
-</html>
+</html>  https://swampy-spec.github.io/Indigenous-Games/4DConflict/index.html
